@@ -887,26 +887,25 @@ class ExpressionMapping {
       });
       RegExp nonNumberRegex = RegExp(r'\s+(\d+\.\d+)\s+');
       if (offsetX is css.LiteralTerm && offsetY is css.LiteralTerm) {
+        var oX = double.tryParse((offsetX as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''));
+        var oY = double.tryParse((offsetY as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''));
+        var bR = double.tryParse((blurRadius as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''));
+        Color? c;
         if (color != null && ExpressionMapping.expressionToColor(color) != null) {
-          shadow.add(Shadow(
-              color: expressionToColor(color)!,
-              offset: Offset(
-                  double.tryParse((offsetX as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''))!,
-                  double.tryParse((offsetY as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''))!),
-              blurRadius: (blurRadius is css.LiteralTerm) ? double.tryParse((blurRadius as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''))! : 0.0,
-          ));
-        } else {
-          shadow.add(Shadow(
-              offset: Offset(
-                  double.tryParse((offsetX as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''))!,
-                  double.tryParse((offsetY as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''))!),
-              blurRadius: (blurRadius is css.LiteralTerm) ? double.tryParse((blurRadius as css.LiteralTerm).text.replaceAll(nonNumberRegex, ''))! : 0.0,
-          ));
+          c = expressionToColor(color);
+        }
+        if (oX != null && oY != null && bR != null && c != null) {
+          shadow.add(
+            Shadow(
+              color: c,
+              offset: Offset(oX, oY),
+              blurRadius: (blurRadius is css.LiteralTerm) ? bR : 0.0,
+            ),
+          );
         }
       }
     }
-    List<Shadow> finalShadows = shadow.toSet().toList();
-    return finalShadows;
+    return shadow.toSet().toList();
   }
 
   static Color stringToColor(String _text) {
