@@ -1,3 +1,6 @@
+## [2.999.1] - April 1, 2023:
+* [FIX] "Null check operator used on a null value" of "text-shadow"
+
 ## [2.2.1] - December 8, 2021:
 * Allow styling on ruby tags
 * Allow width/height/alignment styling on table/tr/td tags
